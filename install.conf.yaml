@@ -1,0 +1,15 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- link:
+    ~/.dotvim: dotvim
+    # ~/.config/nvim/init.lua:
+    #   create: true
+
+- clean: ['~']
+
+- shell:
+  - chsh -s $(which fish)
+
