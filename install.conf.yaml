@@ -3,21 +3,21 @@
       create: true
       relink: true
 
-- link:
-    ~/.dotvim: dotvim
-    # ~/.config/nvim/init.lua:
-    #   create: true
-
-- clean: ['~']
-
 - shell:
   # - [git submodule update --init --recursive, Installing Submodules]
   # - [./scripts/install-llvm.py, Installing LLVM]
   - [echo 'test']
 
+# - link:
+    # ~/.dotvim: dotvim
+    # ~/.config/nvim/init.lua:
+    #   create: true
+
+- clean: ['~']
+
 - package:
   - git
-  - g++
+  - linux: g++
 
 
 # Prerequisites

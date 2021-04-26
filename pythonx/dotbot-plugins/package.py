@@ -51,7 +51,8 @@ class Brew(dotbot.Plugin):
     def can_handle(self, directive: str) -> bool:
         return directive == 'package' and sys.platform == 'darwin'
 
-    def handle(self, directive: str, packages: List[str]) -> bool:
+    def handle(self, directive: str, packages: List[Union[str, Dict]]) -> bool:
+        p = sys.platform
         self._bootstrap_brew()
         self._bootstrap_cask()
 
@@ -64,9 +65,9 @@ class Brew(dotbot.Plugin):
                 if p_pkg is not None:
                     installed_packages.append(p_pkg)
 
-        self._process_data('brew install', installed_packages)
+        self._log.info('Installing package using brew/brew cask: {}'.format(', '.join(installed_packages)))
 
-        return True
+        return self._process_data('brew install', installed_packages)
 
     def _bootstrap(self, cmd):
         with open(os.devnull, 'w') as devnull:
@@ -81,7 +82,7 @@ class Brew(dotbot.Plugin):
             for tap in tap_list:
                 log.info("Tapping %s" % tap)
                 cmd = "brew tap %s" % (tap)
-                result = subprocess.call(cmd, shell=True, stdin=stdin, stdout=stdout, stderr=stderr, cwd=cwd)
+                result = subprocess.call(cmd, shell=True, cwd=cwd)
 
                 if result != 0:
                     log.warning('Failed to tap [%s]' % tap)
