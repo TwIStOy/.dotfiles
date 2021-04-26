@@ -1,6 +1,6 @@
 [submodule "dotbot"]
 	path = dotbot
-	url = https://github.com/anishathalye/dotbot
+	url = git@github.com:TwIStOy/dotbot.git
 	ignore = dirty
 [submodule "dotvim"]
 	path = dotvim

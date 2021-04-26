@@ -11,5 +11,11 @@
 - clean: ['~']
 
 - shell:
-  - chsh -s $(which fish)
+  # - [git submodule update --init --recursive, Installing Submodules]
+  # - [./scripts/install-llvm.py, Installing LLVM]
+  - [echo 'test']
 
+
+
+# Prerequisites
+# git, wget, curl
