@@ -31,10 +31,8 @@ class Apt(dotbot.Plugin):
                 installed_packages.append(pkg)
             elif type(pkg) == dict:
                 p_pkg = pkg.get(p, None)
-                if p_pkg is None:
-                    self._log.error('Expect platform specific package name in {}'.format(pkg))
-                    return False
-                installed_packages.append(p_pkg)
+                if p_pkg is not None:
+                    installed_packages.append(p_pkg)
         res = res and self._run(['sudo', 'apt', 'install', '-y'] + installed_packages,
                 'Installing packages using APT: {}'.format(', '.join(installed_packages)))
         return res
@@ -63,10 +61,8 @@ class Brew(dotbot.Plugin):
                 installed_packages.append(pkg)
             elif type(pkg) == dict:
                 p_pkg = pkg.get(p, None)
-                if p_pkg is None:
-                    self._log.error('Expect platform specific package name in {}'.format(pkg))
-                    return False
-                installed_packages.append(p_pkg)
+                if p_pkg is not None:
+                    installed_packages.append(p_pkg)
 
         self._process_data('brew install', installed_packages)
 
