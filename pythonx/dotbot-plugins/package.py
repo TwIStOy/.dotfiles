@@ -14,17 +14,6 @@ class Apt(dotbot.Plugin):
 
     def handle(self, directive: str, packages: List[Union[str, Dict]]) -> bool:
         p = sys.platform
-        res = True
-        res = res and self._run([
-            'sudo', 'sed', '-i', 's/security.ubuntu.com/mirrors.ustc.edu.cn/g', '/etc/apt/sources.list'
-            ], 'Install USTC mirror')
-        res = res and self._run([
-            'sudo', 'sed', '-i', 's/cn.archive.ubuntu.com/mirrors.ustc.edu.cn/g', '/etc/apt/sources.list'
-            ], 'Install USTC mirror')
-        res = res and self._run([
-            'sudo', 'sed', '-i', 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g', '/etc/apt/sources.list'
-            ], 'Install USTC mirror')
-        res = res and self._run(['sudo', 'apt', 'update'], "Updating APT")
         installed_packages = []
         for pkg in packages:
             if type(pkg) == str:
@@ -33,8 +22,20 @@ class Apt(dotbot.Plugin):
                 p_pkg = pkg.get(p, None)
                 if p_pkg is not None:
                     installed_packages.append(p_pkg)
-        res = res and self._run(['sudo', 'apt', 'install', '-y'] + installed_packages,
-                'Installing packages using APT: {}'.format(', '.join(installed_packages)))
+        self._log.info( 'Installing packages using APT: {}'.format(', '.join(installed_packages)))
+
+        res = True
+        res = res and self._run([
+            'sudo', 'sed', '-i', 's/security.ubuntu.com/mirrors.ustc.edu.cn/g', '/etc/apt/sources.list'
+            ], 'Install USTC mirror step 1')
+        res = res and self._run([
+            'sudo', 'sed', '-i', 's/cn.archive.ubuntu.com/mirrors.ustc.edu.cn/g', '/etc/apt/sources.list'
+            ], 'Install USTC mirror step 2')
+        res = res and self._run([
+            'sudo', 'sed', '-i', 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g', '/etc/apt/sources.list'
+            ], 'Install USTC mirror step 3')
+        res = res and self._run(['sudo', 'apt', 'update'], "Updating APT")
+        res = res and self._run(['sudo', 'apt', 'install', '-y'] + installed_packages, "All packages are installed")
         return res
 
     def _run(self, command: Sequence[Any], low_info: str) -> bool:
