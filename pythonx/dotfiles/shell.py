@@ -30,6 +30,7 @@ def shell(cmd, cwd=None, silence=None, shell=False, env=None):
   process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,
                              shell=shell, cwd=cwd, env=env)
+
   _make_async(process.stdout)
   _make_async(process.stderr)
 

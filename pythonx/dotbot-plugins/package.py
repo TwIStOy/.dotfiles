@@ -7,7 +7,6 @@ import subprocess
 import dotbot
 
 
-
 class Apt(dotbot.Plugin):
     def can_handle(self, directive: str) -> bool:
         return directive == 'package' and sys.platform != 'darwin'
@@ -35,13 +34,14 @@ class Apt(dotbot.Plugin):
             'sudo', 'sed', '-i', 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g', '/etc/apt/sources.list'
             ], 'Install USTC mirror step 3')
         res = res and self._run(['sudo', 'apt', 'update'], "Updating APT")
-        res = res and self._run(['sudo', 'apt', 'install', '-y'] + installed_packages, "All packages are installed")
+        res = res and self._run(['sudo', 'apt', 'install', '-y'] + installed_packages, "Installing packages...")
         return res
 
     def _run(self, command: Sequence[Any], low_info: str) -> bool:
         self._log.lowinfo(low_info)
         try:
             check_call(command, stdout=DEVNULL, stderr=DEVNULL)
+            self._log.lowinfo('Done.')
             return True
         except CalledProcessError as e:
             self._log.error(e)

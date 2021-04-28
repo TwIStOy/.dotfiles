@@ -3,17 +3,58 @@
       create: true
       relink: true
 
-- shell:
-  # - [git submodule update --init --recursive, Installing Submodules]
-  # - [./scripts/install-llvm.py, Installing LLVM]
-  # - [echo 'test']
-  # make sure config folder exists
-  - [mkdir -p ~/.config/kitty]
+
+# library depends
+# - package:
+#   - git
+#   - curl
+#   - wget
+#   - linux: g++
+#   - make
+#   - python3
+#   - python
+#   - linux: libssl-dev
+
+# - shell:
+#   - [mkdir -p ~/.config/kitty]
+#   - [curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o /tmp/rustup-init.sh]
+#   - [sh /tmp/rustup-init.sh -y]
+
+# - cargo:
+#   - bat
+#   - ripgrep:
+#       - no-default-features
+#       - features: pcre2
+
+- self_build:
+  # llvm
+  - vars:
+      platform:
+        linux: linux-gnu-ubuntu-16.04
+        darwin: apple-darwin
+      version: 12.0.0
+    url: https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.0/clang+llvm-{version}-x86_64-{platform}.tar.xz
+    format: tar.xz
+    install:
+      - ['mkdir', '-p', '{HOME}/.local/llvm/{version}/']
+      - ['cp', '-r', 'clang+llvm-{version}-x86_64-{platform}', '{HOME}/.local/llvm/{version}/']
+  # cmake
+  - vars:
+      version: 3.20.1
+    url: https://github.com/Kitware/CMake/releases/download/v{version}/cmake-{version}.tar.gz
+    format: tar.gz
+    install:
+      - ['./configure']
+      - ['make']
+      - ['sudo', 'make', 'install']
+
 
 # setup kitty
 - link:
     ~/.config/kitty/kitty.conf: dots/kitty/kitty.conf
     ~/.config/kitty/kitty_theme.conf: dots/kitty/melange_dark.conf
+
+
 
 # - link:
 #     ~/.dotvim: dotvim
@@ -21,8 +62,4 @@
 #       create: true
 
 - clean: ['~']
-
-- package:
-  - git
-  - linux: g++
 
