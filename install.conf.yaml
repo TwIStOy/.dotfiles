@@ -72,10 +72,9 @@
     ~/.config/fish/config.fish: dots/fish/config.fish
     ~/.dotvim: dotvim
 
-# - link:
-#     ~/.dotvim: dotvim
-#     ~/.config/nvim/init.lua:
-#       create: true
+- shell:
+  # generate init.lua
+  - [~/.dotfiles/scripts/generate-neovim-init.fish]
 
 - clean: ['~']
 
