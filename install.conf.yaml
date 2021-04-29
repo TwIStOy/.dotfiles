@@ -13,12 +13,17 @@
   - python3
   - python
   - linux: libssl-dev
+  - fish
 
 - shell:
   - [mkdir -p ~/.config/kitty]
   # Install rust and cargo
   - [curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o /tmp/rustup-init.sh]
   - [sh /tmp/rustup-init.sh -y]
+  # fisher
+  - [curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher]
+  - [fisher install jorgebucaran/nvm.fish]
+  - [fisher install pure-fish/pure]
 
 - cargo:
   - bat
@@ -64,6 +69,8 @@
 - link:
     ~/.config/kitty/kitty.conf: dots/kitty/kitty.conf
     ~/.config/kitty/kitty_theme.conf: dots/kitty/melange_dark.conf
+    ~/.config/fish/config.fish: dots/fish/config.fish
+    ~/.dotvim: dotvim
 
 # - link:
 #     ~/.dotvim: dotvim
