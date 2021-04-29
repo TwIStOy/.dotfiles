@@ -10,7 +10,6 @@ import dotbot
 class Cargo(dotbot.Plugin):
   _directive = 'cargo'
   _cmd_tpl = 'cargo {toolchains} install --force {binary} {options}'
-  # _cmd_tpl = ['cargo {toolchains} install --force {binary} {options}']
 
   def can_handle(self, directive):
     return directive == self._directive
@@ -53,8 +52,12 @@ class Cargo(dotbot.Plugin):
 
   def _run_cargo(self, binary: str, cmd: str):
     with open(os.devnull, 'w') as devnull:
+      my_env = os.environ.copy()
+      my_env["PATH"] = os.path.expanduser('~/.cargo/bin') + ":" + my_env["PATH"]
+
       r = subprocess.run(cmd, shell=True, stdin=devnull, stdout=devnull,
-          stderr=subprocess.PIPE, cwd=self._context.base_directory())
+                         stderr=subprocess.PIPE,
+                         cwd=self._context.base_directory(), env=my_env)
       if r.returncode != 0:
         self._log.error(r.stderr.decode())
         self._log.warning('Rust binary {} could not be installed', binary)
