@@ -72,6 +72,12 @@ class DownloadAndBuild(dotbot.Plugin):
       if rc != 0:
         return False
 
+    export_vars = data.get('export', {})
+    if export_vars:
+      for k,v in export_vars.items():
+        with open(f'dotfiles-var-{k}.fish', 'w') as fp:
+          fp.write(f'set -gx {k} {v}')
+
     return True
 
   def _get_value(self, data: dict, key: str) -> str:

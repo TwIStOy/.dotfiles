@@ -48,6 +48,8 @@
     install:
       - ['mkdir', '-p', '{HOME}/.local/llvm/{version}/']
       - ['cp', '-r', 'clang+llvm-{version}-x86_64-{platform}', '{HOME}/.local/llvm/{version}/']
+    export:
+      DOTFILES_LLVM_PATH: '{HOME}/.local/llvm/{version}/clang+llvm-{version}-x86_64-{platform}'
   # cmake
   - vars:
       version: 3.20.1
