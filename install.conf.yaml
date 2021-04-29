@@ -27,6 +27,8 @@
       features: vendored-openssl
   - skim
   - fd-find
+  - exa
+  - zoxide
 
 - git:
   - url: 'https://github.com/rust-analyzer/rust-analyzer.git'
