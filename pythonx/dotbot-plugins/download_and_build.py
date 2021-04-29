@@ -81,7 +81,7 @@ class DownloadAndBuild(dotbot.Plugin):
     return data[key]
 
   def _mk_temp_folder(self) -> str:
-    v, _, _ = shell(['mktemp', '-d', '/tmp/dotfiles-download-anb-build-XXXXXXXX'], silence=True)
+    v, _, _ = shell(['mktemp', '-d', '/tmp/dotfiles-download-and-build-XXXXXXXX'], silence=True)
     return v.strip()
 
 # vim: ts=2 sw=2
