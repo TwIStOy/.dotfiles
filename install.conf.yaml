@@ -16,12 +16,23 @@
 
 - shell:
   - [mkdir -p ~/.config/kitty]
+  # Install rust and cargo
   - [curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o /tmp/rustup-init.sh]
   - [sh /tmp/rustup-init.sh -y]
 
 - cargo:
   - bat
-  - ripgrep:
+  - ripgrep
+  - cargo-edit:
+      features: vendored-openssl
+  - skim
+  - fd-find
+
+- git:
+  - url: 'https://github.com/rust-analyzer/rust-analyzer.git'
+    path: '{HOME}/.local/rust-analyzer'
+    post:
+      - cargo xtask install --server
 
 - self_build:
   # llvm

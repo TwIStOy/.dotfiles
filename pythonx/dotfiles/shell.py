@@ -24,7 +24,7 @@ def shell(cmd, cwd=None, silence=None, shell=False, env=None):
   """
   Run command, output stderr and stdout
   """
-  if shell is True:
+  if shell is True and isinstance(shell, list):
     cmd = ' '.join(cmd)
 
   process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
