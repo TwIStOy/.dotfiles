@@ -13,33 +13,14 @@
   - python3
   - python
   - linux: libssl-dev
-  - fish
-
-- shell:
-  - [mkdir -p ~/.config/kitty]
-  # Install rust and cargo
-  - [curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o /tmp/rustup-init.sh]
-  - [sh /tmp/rustup-init.sh -y]
-  # fisher
-  - [curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher]
-  - [fisher install jorgebucaran/nvm.fish]
-  - [fisher install pure-fish/pure]
-
-- cargo:
-  - bat
-  - ripgrep
-  - cargo-edit:
-      features: vendored-openssl
-  - skim
-  - fd-find
-  - exa
-  - zoxide
-
-- git:
-  - url: 'https://github.com/rust-analyzer/rust-analyzer.git'
-    path: '{HOME}/.local/rust-analyzer'
-    post:
-      - cargo xtask install --server
+  - linux: libncurses-dev
+  - linux: gettext
+  - pkg-config
+  - libtool
+  - linux: libtool-bin
+  - linux: m4
+  - autoconf
+  - unzip
 
 - self_build:
   # llvm
@@ -50,6 +31,7 @@
       version: 12.0.0
     url: https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.0/clang+llvm-{version}-x86_64-{platform}.tar.xz
     format: tar.xz
+    check_point: '{HOME}/.local/llvm/{version}/clang+llvm-{version}-x86_64-{platform}'
     install:
       - ['mkdir', '-p', '{HOME}/.local/llvm/{version}/']
       - ['cp', '-r', 'clang+llvm-{version}-x86_64-{platform}', '{HOME}/.local/llvm/{version}/']
@@ -60,10 +42,53 @@
       version: 3.20.1
     url: https://github.com/Kitware/CMake/releases/download/v{version}/cmake-{version}.tar.gz
     format: tar.gz
+    path: 'cmake-{version}'
+    check_point: /usr/local/bin/cmake
     install:
       - ['./configure']
-      - ['make']
+      - ['make', '-j20']
       - ['sudo', 'make', 'install']
+
+- self_build:
+  - vars:
+      version: 3.2.2
+    url: https://github.com/fish-shell/fish-shell/releases/download/{version}/fish-{version}.tar.xz
+    format: tar.xz
+    check_point: /usr/local/bin/fish
+    path: 'fish-{version}'
+    install:
+      - ['cmake', '.']
+      - ['make', '-j20']
+      - ['sudo', 'make', 'install']
+
+- shell:
+  - [mkdir -p ~/.config/kitty]
+  # Install rust and cargo
+  - [curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y]
+  # fisher
+  - [fish -c "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher"]
+  - [fish -c "fisher install jorgebucaran/nvm.fish"]
+  - [fish -c "fisher install pure-fish/pure"]
+
+- cargo:
+  - bat
+  - ripgrep
+  - cargo-edit
+  - skim
+  - fd-find
+  - exa
+  - zoxide
+
+- git:
+  - url: 'https://github.com/rust-analyzer/rust-analyzer.git'
+    path: '{HOME}/.local/rust-analyzer'
+    post:
+      - ~/.cargo/bin/cargo xtask install --server
+  - url: 'https://github.com/neovim/neovim.git'
+    path: '{HOME}/.local/neovim'
+    post:
+      - make CMAKE_BUILD_TYPE=RelWithDebInfo -j20
+      - sudo make install
 
 # setup kitty
 - link:

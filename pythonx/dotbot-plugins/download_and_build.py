@@ -50,6 +50,12 @@ class DownloadAndBuild(dotbot.Plugin):
 
     url = self._get_value(data, 'url').format(**vars)
     format = self._get_value(data, 'format').format(**vars)
+    check_point = data.get('check_point', None)
+    if check_point:
+      check_point = check_point.format(**vars)
+      if os.path.exists(check_point):
+        self._log.lowinfo('Checkpoint exists! Skip!')
+        return True
 
     temp_folder = self._mk_temp_folder()
 
@@ -67,15 +73,24 @@ class DownloadAndBuild(dotbot.Plugin):
       return False
 
     install_commands = data.get('install', [])
+
+    folder = temp_folder
+    p = data.get('path', None)
+    if p:
+      folder = os.path.join(folder, p.format(**vars))
+
     for cmd in install_commands:
-      _, _, rc = shell([x.format(**vars) for x in cmd], cwd=temp_folder, shell=True)
+      c = [x.format(**vars) for x in cmd]
+      self._log.lowinfo(f'Install cmd: {c}, at {folder}')
+      _, _, rc = shell(c, cwd=folder)
       if rc != 0:
         return False
 
     export_vars = data.get('export', {})
     if export_vars:
+      shell(['mkdir', '-p', os.path.expanduser('~/.config/fish/conf.d')], silence=True)
       for k,v in export_vars.items():
-        with open(f'dotfiles-var-{k}.fish', 'w') as fp:
+        with open(os.path.join(os.path.expanduser('~/.config/fish/conf.d'), f'dotfiles-var-{k}.fish'), 'w') as fp:
           fp.write(f'set -gx {k} {v}')
 
     return True
