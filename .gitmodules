@@ -2,6 +2,3 @@
 	path = dotbot
 	url = git@github.com:TwIStOy/dotbot.git
 	ignore = dirty
-[submodule "dotvim"]
-	path = dotvim
-	url = git@github.com:TwIStOy/dotvim.git

@@ -103,11 +103,12 @@
     ~/.config/kitty/kitty.conf: dots/kitty/kitty.conf
     ~/.config/kitty/kitty_theme.conf: dots/kitty/melange_dark.conf
     ~/.config/fish/config.fish: dots/fish/config.fish
-    ~/.dotvim: dotvim
 
 - shell:
   # generate init.lua
   - [~/.dotfiles/scripts/generate-neovim-init.fish]
+  # clone my dotvim repo
+  - [git clone git@github.com:TwIStOy/dotvim.git ~/.dotvim]
 
 - clean: ['~']
 
