@@ -23,6 +23,19 @@
   - unzip
 
 - self_build:
+  # cmake, cmake must installed before llvm
+  - vars:
+      version: 3.20.1
+    url: https://github.com/Kitware/CMake/releases/download/v{version}/cmake-{version}.tar.gz
+    format: tar.gz
+    path: 'cmake-{version}'
+    check_point: /usr/local/bin/cmake
+    install:
+      - ['./configure']
+      - ['make', '-j20']
+      - ['sudo', 'make', 'install']
+
+- self_build:
   # llvm
   - vars:
       platform:
@@ -37,17 +50,6 @@
       - ['cp', '-r', 'clang+llvm-{version}-x86_64-{platform}', '{HOME}/.local/llvm/{version}/']
     export:
       DOTFILES_LLVM_PATH: '{HOME}/.local/llvm/{version}/clang+llvm-{version}-x86_64-{platform}'
-  # cmake
-  - vars:
-      version: 3.20.1
-    url: https://github.com/Kitware/CMake/releases/download/v{version}/cmake-{version}.tar.gz
-    format: tar.gz
-    path: 'cmake-{version}'
-    check_point: /usr/local/bin/cmake
-    install:
-      - ['./configure']
-      - ['make', '-j20']
-      - ['sudo', 'make', 'install']
 
 - self_build:
   - vars:
@@ -88,6 +90,12 @@
     path: '{HOME}/.local/neovim'
     post:
       - make CMAKE_BUILD_TYPE=RelWithDebInfo -j20
+      - sudo make install
+  - url: 'https://github.com/jonas/tig.git'
+    path: '{HOME}/.local/tig'
+    post:
+      - configure
+      - make
       - sudo make install
 
 # setup kitty
