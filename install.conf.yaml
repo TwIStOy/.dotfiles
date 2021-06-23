@@ -80,6 +80,7 @@
   - fd-find
   - exa
   - zoxide
+  - gping
 
 - git:
   - url: 'https://github.com/rust-analyzer/rust-analyzer.git'
