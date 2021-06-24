@@ -21,6 +21,7 @@
   - linux: m4
   - autoconf
   - unzip
+  - linux: libncursesw5-dev
 
 - self_build:
   # cmake, cmake must installed before llvm
@@ -95,7 +96,8 @@
   - url: 'https://github.com/jonas/tig.git'
     path: '{HOME}/.local/tig'
     post:
-      - configure
+      - ./autogen.sh
+      - ./configure
       - make
       - sudo make install
 
