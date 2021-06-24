@@ -10,7 +10,7 @@ function generate-neovim-init
   echo "require('walnut.init')" >> $tmp_file
 
   mkdir -p ~/.config/nvim
-  # mv $tmp_file ~/.config/nvim/init.lua
+  mv $tmp_file ~/.config/nvim/init.lua
 end
 
 generate-neovim-init

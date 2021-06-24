@@ -111,7 +111,7 @@
   # generate init.lua
   - [~/.dotfiles/scripts/generate-neovim-init.fish]
   # clone my dotvim repo
-  - [git clone git@github.com:TwIStOy/dotvim.git ~/.dotvim]
+  - [git clone https://github.com/TwIStOy/dotvim.git ~/.dotvim]
 
 - clean: ['~']
 
