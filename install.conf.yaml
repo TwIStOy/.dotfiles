@@ -36,8 +36,8 @@
       - ['make', '-j20']
       - ['sudo', 'make', 'install']
 
+# llvm
 - self_build:
-  # llvm
   - vars:
       platform:
         linux: linux-gnu-ubuntu-16.04
@@ -52,6 +52,7 @@
     export:
       DOTFILES_LLVM_PATH: '{HOME}/.local/llvm/{version}/clang+llvm-{version}-x86_64-{platform}'
 
+# fish-shell
 - self_build:
   - vars:
       version: 3.2.2
@@ -70,8 +71,14 @@
   - [curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y]
   # fisher
   - [fish -c "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher"]
-  - [fish -c "fisher install jorgebucaran/nvm.fish"]
   - [fish -c "fisher install pure-fish/pure"]
+  - [fish -c "fisher install edc/bass"]
+  - [fish -c "fisher install TwIStOy/my-fish-functions"]
+  - [fish -c "curl -fsSL https://fnm.vercel.app/install | bash"]
+
+- shell:
+  - [fish -c "fnm install 14.17.3"]
+  - [fish -c "npm install -g tldr neovim"]
 
 - cargo:
   - bat
