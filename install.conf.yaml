@@ -41,21 +41,24 @@
   - vars:
       platform:
         linux: linux-gnu-ubuntu-16.04
-        darwin: apple-darwin
-      version: 13.0.0
-    url: https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-{version}-x86_64-{platform}.tar.xz
+        darwin: apple-darwin21.0
+      target:
+        linux: x86_64
+        darwin: arm64
+      version: 15.0.0
+    url: https://github.com/llvm/llvm-project/releases/download/llvmorg-{version}/clang+llvm-{version}-{target}-{platform}.tar.xz
     format: tar.xz
-    check_point: '{HOME}/.local/llvm/{version}/clang+llvm-{version}-x86_64-{platform}'
+    check_point: '{HOME}/.local/llvm/{version}/clang+llvm-{version}-{target}-{platform}'
     install:
       - ['mkdir', '-p', '{HOME}/.local/llvm/{version}/']
-      - ['cp', '-r', 'clang+llvm-{version}-x86_64-{platform}', '{HOME}/.local/llvm/{version}/']
+      - ['cp', '-r', 'clang+llvm-{version}-{target}-{platform}', '{HOME}/.local/llvm/{version}/']
     export:
-      DOTFILES_LLVM_PATH: '{HOME}/.local/llvm/{version}/clang+llvm-{version}-x86_64-{platform}'
+      DOTFILES_LLVM_PATH: '{HOME}/.local/llvm/{version}/clang+llvm-{version}-{target}-{platform}'
 
 # fish-shell
 - self_build:
   - vars:
-      version: 3.3.1
+      version: 3.5.1
     url: https://github.com/fish-shell/fish-shell/releases/download/{version}/fish-{version}.tar.xz
     format: tar.xz
     check_point: /usr/local/bin/fish
