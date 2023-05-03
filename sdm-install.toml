@@ -1,0 +1,10 @@
+[[steps]]
+plugin = "homebrew"
+[steps.params]
+packages = ["jq"]
+
+[[steps]]
+plugin = "cargo"
+params = ["ripgrep", "fd-find", "bat", "exa", "stylua", "git-delta"]
+
+
