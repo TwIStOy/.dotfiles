@@ -1,4 +1,9 @@
 [[steps]]
+plugin = "link"
+[steps.params.links."$HOME/.local/share/sdm/bin/clangd"]
+path = "$HOME/.local/llvm/16.0.2/clang+llvm-16.0.2-arm64-apple-darwin22.0/bin/clangd"
+
+[[steps]]
 plugin = "homebrew"
 [steps.params]
 packages = ["jq"]
